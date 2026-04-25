@@ -1,1 +1,633 @@
-Hello World!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Who is Jonas?</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root {
+  --g: rgb(255, 255, 255, 0.7);
+  --b: #00d4ff;
+  --bg: #06090f;
+  --glow: rgb(255, 255, 255, 0.35);
+  --bglow: rgba(0,212,255,0.25);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Share Tech Mono', monospace;
+  overflow: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none; z-index: 9998;
+}
+
+/* ─── WRAPPER ─── */
+#wrap {
+  position: relative;
+  width: 56px; height: 56px;
+  transition: width 0.65s cubic-bezier(0.16,1,0.3,1), height 0.65s cubic-bezier(0.16,1,0.3,1);
+  cursor: pointer;
+}
+#wrap.open {
+  width: min(340px, 90vw);
+  height: min(570px, 86vh);
+  cursor: default;
+}
+
+/* ─── CARD ─── */
+#card {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+#card::before, #card::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+}
+#card::before {
+  inset: 0;
+  border: 2px solid var(--g);
+  box-shadow:
+    inset 0 0 0 5px var(--bg),
+    inset 0 0 0 7px var(--g),
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--g),
+    0 0 28px var(--glow),
+    0 0 60px rgba(0,255,136,0.12);
+}
+#card::after {
+  inset: 3px;
+  border: 1px solid rgba(0,255,136,0.18);
+}
+
+#wrap:not(.open) #card::before {
+  animation: sqPulse 2.2s ease-in-out infinite;
+}
+@keyframes sqPulse {
+  0%,100% { box-shadow: inset 0 0 0 5px var(--bg), inset 0 0 0 7px var(--g), 0 0 0 2px var(--bg), 0 0 0 4px var(--g), 0 0 28px var(--glow), 0 0 60px rgba(0,255,136,0.12); }
+  50%      { box-shadow: inset 0 0 0 5px var(--bg), inset 0 0 0 7px var(--g), 0 0 0 2px var(--bg), 0 0 0 4px var(--g), 0 0 50px rgba(0,255,136,0.75), 0 0 100px rgba(0,255,136,0.25); }
+}
+
+/* ─── INNER ─── */
+#inner {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  transition-delay: 0.45s;
+}
+#wrap.open #inner { opacity: 1; }
+
+/* HEADER FILLER (to prevent clicking on menu when closed) */
+.fill-header {
+  height: 32px;
+}
+
+/* ─── CONTENT AREA ─── */
+#area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── MENU ─── */
+#menu {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+}
+#menu.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mitem {
+  display: flex; align-items: center;
+  padding: 11px 6px;
+  border-bottom: 1px solid rgba(0,255,136,0.1);
+  cursor: pointer;
+  transition: background 0.1s;
+  position: relative;
+}
+.mitem::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--g);
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.mcursor {
+  width: 7px; height: 12px;
+  background: var(--g);
+  margin-right: 10px;
+  flex-shrink: 0;
+  opacity: 0;
+  box-shadow: 0 0 6px var(--glow);
+}
+.mitem.sel .mcursor { animation: blink 0.75s step-end infinite; }
+
+@keyframes blink {
+  0%,100%{opacity:1} 50%{opacity:0}
+}
+
+.mlabel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--g);
+  letter-spacing: 0.5px;
+}
+.marrow {
+  font-size: 11px;
+  color: rgba(0,255,136,0.35);
+  margin-left: auto;
+}
+
+/* ─── MENU CLOSE BUTTON ─── */
+#menu-close {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,255,136,0.12);
+  margin-top: auto;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  border-top: none;
+}
+#btn-close-menu {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--b);
+  border: 2px solid rgba(0,212,255,0.5);
+  padding: 9px 22px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s;
+  text-shadow: 0 0 6px var(--bglow);
+  letter-spacing: 1px;
+}
+#btn-close-menu:hover {
+  background: rgba(0,212,255,0.1);
+  box-shadow: 0 0 10px var(--bglow);
+}
+
+/* ─── SECTION SCREENS ─── */
+.sec {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  transform: translateX(110%);
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+  opacity: 0;
+  padding-top: 10px;
+  pointer-events: none;
+}
+.sec.on {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sec-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--g);
+  text-shadow: 0 0 8px var(--glow);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,255,136,0.25);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.sec-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 2px;
+  min-height: 0;
+}
+
+/* ─── BOTTOM BACK BUTTON ─── */
+.sec-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,255,136,0.12);
+  margin-top: 8px;
+}
+.back {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--b);
+  border: 2px solid rgba(0,212,255,0.5);
+  padding: 9px 22px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s;
+  text-shadow: 0 0 6px var(--bglow);
+  letter-spacing: 1px;
+}
+.back:hover {
+  background: rgba(0,212,255,0.1);
+  box-shadow: 0 0 10px var(--bglow);
+}
+
+/* ─── ABOUT ─── */
+.avi {
+  width: 52px; height: 52px;
+  border: 2px solid var(--g);
+  box-shadow: 0 0 12px var(--glow), inset 0 0 8px rgba(0,255,136,0.07);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: var(--g);
+  margin-bottom: 12px;
+  background: rgba(0,255,136,0.04);
+  text-shadow: 0 0 10px var(--glow);
+}
+.a-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--g);
+  margin-bottom: 4px;
+  text-shadow: 0 0 8px var(--glow);
+}
+.a-role {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: var(--b);
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+.a-bio {
+  font-size: 10px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.9;
+  border-left: 2px solid rgba(0,255,136,0.3);
+  padding-left: 10px;
+}
+
+/* ─── SKILLS ─── */
+.sk { margin-bottom: 14px; }
+.sk-top {
+  display: flex; justify-content: space-between;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: var(--b);
+  margin-bottom: 5px;
+}
+.sk-bg {
+  height: 8px;
+  background: rgba(0,255,136,0.06);
+  border: 1px solid rgba(0,255,136,0.2);
+  overflow: hidden;
+}
+.sk-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0099cc, #00ff88);
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 6px rgba(0,255,136,0.4);
+}
+
+/* ─── EXPERIENCE ─── */
+.exp {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0,255,136,0.09);
+}
+.exp:last-child { border-bottom: none; }
+.exp-co {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: var(--g);
+  margin-bottom: 3px;
+  text-shadow: 0 0 6px var(--glow);
+}
+.exp-role { font-size: 10px; color: var(--b); margin-bottom: 2px; }
+.exp-yr {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 4px;
+  color: rgba(0,255,136,0.35);
+  margin-bottom: 6px;
+}
+.exp-desc { font-size: 10px; color: rgba(255,255,255,0.6); line-height: 1.75; }
+
+/* ─── CONTACT ─── */
+.ct {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(0,255,136,0.09);
+  cursor: pointer;
+}
+.ct:hover .ct-ico { box-shadow: 0 0 10px var(--glow); }
+.ct-ico {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(0,255,136,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  color: var(--g);
+  flex-shrink: 0;
+  transition: box-shadow 0.15s;
+}
+.ct-lbl {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: var(--b);
+  margin-bottom: 3px;
+  opacity: 0.8;
+}
+.ct-val { font-size: 10px; color: rgba(255,255,255,0.7); }
+
+/* ─── WIPE ─── */
+#wipe {
+  position: absolute; inset: 0;
+  background: var(--g);
+  z-index: 50;
+  clip-path: inset(100% 0 0 0);
+}
+
+/* ─── HINT ─── */
+#hint {
+  position: fixed;
+  bottom: 28px;
+  left: 50%; transform: translateX(-50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: rgb(255, 255, 255);
+  letter-spacing: 2px;
+  animation: blink 1.6s step-end infinite;
+  transition: opacity 0.4s;
+  white-space: nowrap;
+  pointer-events: none;
+}
+#hint.gone { 
+  opacity: 0;
+  visibility: hidden;
+ }
+
+/* ─── CORNERS ─── */
+.corner {
+  position: absolute;
+  width: 8px; height: 8px;
+  z-index: 11;
+  pointer-events: none;
+}
+.corner::before, .corner::after {
+  content: '';
+  position: absolute;
+  background: var(--g);
+  box-shadow: 0 0 4px var(--glow);
+}
+.corner::before { width: 8px; height: 2px; }
+.corner::after  { width: 2px; height: 8px; }
+.tl { top: 10px; left: 10px; }
+.tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.br { bottom: 10px; right: 10px; transform: scale(-1); }
+</style>
+</head>
+<body>
+
+<div id="hint">PRESS TO OPEN</div>
+
+<div id="wrap">
+  <div id="card">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div id="wipe"></div>
+
+    <div id="inner">
+      <div id="area">
+
+        <!-- MENU -->
+        <div id="menu" class="hidden">
+          <div class="mitem sel" data-t="about">
+            <div class="mcursor"></div>
+            <span class="mlabel">ABOUT</span>
+            <span class="marrow">▸</span>
+          </div>
+          <div class="mitem" data-t="skills">
+            <div class="mcursor"></div>
+            <span class="mlabel">SKILLS</span>
+            <span class="marrow">▸</span>
+          </div>
+          <div class="mitem" data-t="work">
+            <div class="mcursor"></div>
+            <span class="mlabel">EXPERIENCE</span>
+            <span class="marrow">▸</span>
+          </div>
+          <div class="mitem" data-t="contact">
+            <div class="mcursor"></div>
+            <span class="mlabel">CONTACT</span>
+            <span class="marrow">▸</span>
+          </div>
+          <div id="menu-close">
+            <button id="btn-close-menu">◄ CLOSE</button>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="sec" id="about-sec">
+          <div class="sec-title">ABOUT</div>
+          <div class="sec-body">
+            <div class="avi">JS</div>
+            <div class="a-name">JANE SMITH</div>
+            <div class="a-role">// FULL-STACK DEVELOPER</div>
+            <div class="a-bio">
+              I build things for the web and occasionally for the fun of it.<br><br>
+              Currently crafting products that live at the intersection of good code and good design. Based in ████████ — available for freelance work and interesting collaborations.
+            </div>
+          </div>
+          <div class="sec-footer"><button class="back">◄ BACK</button></div>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="sec" id="skills-sec">
+          <div class="sec-title">SKILLS</div>
+          <div class="sec-body">
+            <div class="sk"><div class="sk-top"><span>JAVASCRIPT / TS</span><span>92</span></div><div class="sk-bg"><div class="sk-fill" data-w="92%"></div></div></div>
+            <div class="sk"><div class="sk-top"><span>REACT / VUE</span><span>88</span></div><div class="sk-bg"><div class="sk-fill" data-w="88%"></div></div></div>
+            <div class="sk"><div class="sk-top"><span>NODE.JS / APIs</span><span>82</span></div><div class="sk-bg"><div class="sk-fill" data-w="82%"></div></div></div>
+            <div class="sk"><div class="sk-top"><span>UI / UX DESIGN</span><span>76</span></div><div class="sk-bg"><div class="sk-fill" data-w="76%"></div></div></div>
+            <div class="sk"><div class="sk-top"><span>PYTHON</span><span>71</span></div><div class="sk-bg"><div class="sk-fill" data-w="71%"></div></div></div>
+            <div class="sk"><div class="sk-top"><span>DEVOPS / CLOUD</span><span>65</span></div><div class="sk-bg"><div class="sk-fill" data-w="65%"></div></div></div>
+          </div>
+          <div class="sec-footer"><button class="back">◄ BACK</button></div>
+        </div>
+
+        <!-- WORK -->
+        <div class="sec" id="work-sec">
+          <div class="sec-title">EXPERIENCE</div>
+          <div class="sec-body">
+            <div class="exp">
+              <div class="exp-co">ACME CORP</div>
+              <div class="exp-role">Senior Frontend Engineer</div>
+              <div class="exp-yr">2022 → PRESENT</div>
+              <div class="exp-desc">Led redesign of the core product. Cut bundle size 40%. Built the design system from scratch and evangelised it across 6 teams.</div>
+            </div>
+            <div class="exp">
+              <div class="exp-co">STARTUP XYZ</div>
+              <div class="exp-role">Full-Stack Developer</div>
+              <div class="exp-yr">2020 → 2022</div>
+              <div class="exp-desc">0-to-1 product development. Owned everything from DB schema to pixel-perfect UI.</div>
+            </div>
+            <div class="exp">
+              <div class="exp-co">FREELANCE</div>
+              <div class="exp-role">Web Developer</div>
+              <div class="exp-yr">2018 → 2020</div>
+              <div class="exp-desc">Sites and apps for clients in e-commerce, media, and fintech. Shipped fast, broke rarely.</div>
+            </div>
+          </div>
+          <div class="sec-footer"><button class="back">◄ BACK</button></div>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="sec" id="contact-sec">
+          <div class="sec-title">CONTACT</div>
+          <div class="sec-body">
+            <div class="ct">
+              <div class="ct-ico">@</div>
+              <div><div class="ct-lbl">EMAIL</div><div class="ct-val">hello@janesmith.dev</div></div>
+            </div>
+            <div class="ct">
+              <div class="ct-ico">&lt;/&gt;</div>
+              <div><div class="ct-lbl">GITHUB</div><div class="ct-val">github.com/janesmith</div></div>
+            </div>
+            <div class="ct">
+              <div class="ct-ico">in</div>
+              <div><div class="ct-lbl">LINKEDIN</div><div class="ct-val">linkedin.com/in/janesmith</div></div>
+            </div>
+            <div class="ct">
+              <div class="ct-ico">✕</div>
+              <div><div class="ct-lbl">TWITTER / X</div><div class="ct-val">@janesmith_dev</div></div>
+            </div>
+          </div>
+          <div class="sec-footer"><button class="back">◄ BACK</button></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const wrap = document.getElementById('wrap');
+const hint = document.getElementById('hint');
+const wipe = document.getElementById('wipe');
+const menu = document.getElementById('menu');
+const items = document.querySelectorAll('.mitem');
+
+let open = false;
+let sel = items[0];
+
+// Open card only when closed
+wrap.addEventListener('click', e => {
+  if (!open) {
+    open = true;
+    wrap.classList.add('open');
+    hint.classList.add('gone');
+    menu.classList.remove('hidden');
+  }
+});
+
+// Menu item hover + click
+items.forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    sel.classList.remove('sel');
+    sel = item;
+    item.classList.add('sel');
+  });
+  item.addEventListener('click', e => {
+    e.stopPropagation();
+    openSec(item.dataset.t);
+  });
+});
+
+// Close menu → collapse back to square
+document.getElementById('btn-close-menu').addEventListener('click', e => {
+  e.stopPropagation();
+  open = false;
+  wrap.classList.remove('open');
+  hint.classList.remove('gone');
+  menu.classList.add('hidden');
+});
+
+// Section back buttons → return to menu
+document.querySelectorAll('.back').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    closeSec();
+  });
+});
+
+function openSec(name) {
+  const sec = document.getElementById(name + '-sec');
+  doWipe(() => {
+    menu.classList.add('hidden');
+    sec.classList.add('on');
+    if (name === 'skills') {
+      setTimeout(() => {
+        sec.querySelectorAll('.sk-fill').forEach(b => b.style.width = b.dataset.w);
+      }, 60);
+    }
+  });
+}
+
+function closeSec() {
+  const cur = document.querySelector('.sec.on');
+  if (!cur) return;
+  doWipe(() => {
+    cur.classList.remove('on');
+    cur.querySelectorAll('.sk-fill').forEach(b => b.style.width = '0%');
+    menu.classList.remove('hidden');
+  });
+}
+
+function doWipe(mid) {
+  wipe.style.transition = 'none';
+  wipe.style.clipPath = 'inset(100% 0 0 0)';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    wipe.style.transition = 'clip-path 0.18s ease-in';
+    wipe.style.clipPath = 'inset(0% 0 0 0)';
+    setTimeout(() => {
+      mid();
+      wipe.style.transition = 'clip-path 0.18s ease-out';
+      wipe.style.clipPath = 'inset(0 0 100% 0)';
+      setTimeout(() => { wipe.style.clipPath = 'inset(100% 0 0 0)'; }, 200);
+    }, 200);
+  }));
+}
+</script>
+</body>
+</html>
