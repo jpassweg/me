@@ -124,6 +124,9 @@ body::after {
   pointer-events: none;
 }
 
+#first-mitem {
+  border-top: 1px solid rgba(0,255,136,0.1);
+}
 .mitem {
   display: flex; align-items: center;
   padding: 11px 6px;
@@ -141,30 +144,15 @@ body::after {
   transition: opacity 0.1s;
 }
 
-.mcursor {
-  width: 7px; height: 12px;
-  background: var(--g);
-  margin-right: 10px;
-  flex-shrink: 0;
-  opacity: 0;
-  box-shadow: 0 0 6px var(--glow);
-}
-.mitem.sel .mcursor { animation: blink 0.75s step-end infinite; }
-
 @keyframes blink {
   0%,100%{opacity:1} 50%{opacity:0}
 }
 
 .mlabel {
   font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
-  color: var(--g);
+  font-size: 14px;
+  color: white;
   letter-spacing: 0.5px;
-}
-.marrow {
-  font-size: 11px;
-  color: rgba(0,255,136,0.35);
-  margin-left: auto;
 }
 
 /* ─── MENU CLOSE BUTTON ─── */
@@ -432,25 +420,17 @@ body::after {
 
         <!-- MENU -->
         <div id="menu" class="hidden">
-          <div class="mitem sel" data-t="about">
-            <div class="mcursor"></div>
+          <div id="first-mitem" class="mitem sel" data-t="about">
             <span class="mlabel">ABOUT</span>
-            <span class="marrow">▸</span>
           </div>
           <div class="mitem" data-t="skills">
-            <div class="mcursor"></div>
             <span class="mlabel">SKILLS</span>
-            <span class="marrow">▸</span>
           </div>
           <div class="mitem" data-t="work">
-            <div class="mcursor"></div>
             <span class="mlabel">EXPERIENCE</span>
-            <span class="marrow">▸</span>
           </div>
           <div class="mitem" data-t="contact">
-            <div class="mcursor"></div>
             <span class="mlabel">CONTACT</span>
-            <span class="marrow">▸</span>
           </div>
           <div id="menu-close">
             <button id="btn-close-menu">◄ CLOSE</button>
