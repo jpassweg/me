@@ -10,7 +10,10 @@
 
 :root {
   --g: rgb(255, 255, 255, 0.7);
-  --b: #00d4ff;
+  --blue: #00d4ff;
+  --pink: #EE4266;
+  --yellow: #FFD23F;
+  --green: #0EAD69;
   --bg: #06090f;
   --glow: rgb(255, 255, 255, 0.35);
   --bglow: rgba(0,212,255,0.25);
@@ -186,7 +189,7 @@ body::after {
 #btn-close-menu {
   font-family: 'Press Start 2P', monospace;
   font-size: 7px;
-  color: var(--b);
+  color: var(--blue);
   border: 2px solid rgba(0,212,255,0.5);
   padding: 9px 22px;
   background: transparent;
@@ -246,7 +249,7 @@ body::after {
 .back {
   font-family: 'Press Start 2P', monospace;
   font-size: 7px;
-  color: var(--b);
+  color: var(--blue);
   border: 2px solid rgba(0,212,255,0.5);
   padding: 9px 22px;
   background: transparent;
@@ -283,7 +286,7 @@ body::after {
 .a-role {
   font-family: 'Press Start 2P', monospace;
   font-size: 5px;
-  color: var(--b);
+  color: var(--blue);
   margin-bottom: 14px;
   opacity: 0.85;
 }
@@ -301,7 +304,7 @@ body::after {
   display: flex; justify-content: space-between;
   font-family: 'Press Start 2P', monospace;
   font-size: 5px;
-  color: var(--b);
+  color: var(--blue);
   margin-bottom: 5px;
 }
 .sk-bg {
@@ -332,7 +335,7 @@ body::after {
   margin-bottom: 3px;
   text-shadow: 0 0 6px var(--glow);
 }
-.exp-role { font-size: 10px; color: var(--b); margin-bottom: 2px; }
+.exp-role { font-size: 10px; color: var(--blue); margin-bottom: 2px; }
 .exp-yr {
   font-family: 'Press Start 2P', monospace;
   font-size: 4px;
@@ -361,7 +364,7 @@ body::after {
 .ct-lbl {
   font-family: 'Press Start 2P', monospace;
   font-size: 5px;
-  color: var(--b);
+  color: var(--blue);
   margin-bottom: 3px;
   opacity: 0.8;
 }
@@ -382,12 +385,14 @@ body::after {
   left: 50%; transform: translateX(-50%);
   font-family: 'Press Start 2P', monospace;
   font-size: 8px;
-  color: rgb(255, 255, 255);
+  color: var(--yellow);
+  text-shadow: 0 0 6px var(--bglow);
   letter-spacing: 2px;
   animation: blink 1.6s step-end infinite;
   transition: opacity 0.4s;
   white-space: nowrap;
   pointer-events: none;
+  
 }
 #hint.gone { 
   opacity: 0;
