@@ -314,6 +314,7 @@
   <!-- Dark mode toggle -->
   <div class="toggle-wrap">
     <button class="toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <span class="toggle-icon">🌙</span>
       <span class="toggle-pill"></span>
     </button>
   </div>
@@ -321,6 +322,17 @@
   <!-- Hero -->
   <div class="container">
     <section class="hero">
+      <!--
+        To use your own photo, replace the placeholder below with:
+        <img class="hero-photo" src="photo.jpg" alt="Jonas" />
+      -->
+      <div class="hero-photo-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="35" rx="24" ry="27"/>
+          <path d="M5 110 Q5 72 50 72 Q95 72 95 110Z"/>
+        </svg>
+      </div>
+
       <h1>Hello, I'm Jonas</h1>
       <p>Welcome to my website! I'm a Computer Science graduate with a Master's Degree from ETH Zürich. Here you can find information about my projects, skills, and experiences.</p>
     </section>
@@ -330,7 +342,7 @@
   <div class="band">
     <div class="inner">
       <h2 class="section-title">About me</h2>
-      <img src="resources/brain_depiction.png" alt="Brain icon" style="width: 80px; margin-bottom: 1.5rem;" />
+      <span class="band-icon" aria-hidden="true">🧠</span>
       <p>My journey began with a fascination for the consciousness produced by the human brain and its parallels with machines. Over time, I realised that fully comprehending the brain's complexity might be beyond reach. Instead, I've shifted my focus to understanding people's needs and translating them into effective software solutions.</p>
     </div>
   </div>
@@ -345,7 +357,7 @@
         <div class="project-card">
           <h3>Wheather or Not</h3>
           <p>
-            Wheather or Not simplifies your life by eliminating the need for complex weather apps. Whether you're a child eager to fly a kite or a farmer planning to sow crops, WeatherOrNot seamlessly integrates various weather APIs and advanced language models to comprehend your activities. It provides personalised, optimal timing suggestions, ensuring you always have the perfect weather conditions for your plans.
+            <a href="#" target="_blank" rel="noopener">Wheather or Not</a> simplifies your life by eliminating the need for complex weather apps. Whether you're a child eager to fly a kite or a farmer planning to sow crops, WeatherOrNot seamlessly integrates various weather APIs and advanced language models to comprehend your activities. It provides personalised, optimal timing suggestions, ensuring you always have the perfect weather conditions for your plans.
           </p>
           <span class="project-tag">Hack Kosice 2024</span>
         </div>
@@ -358,7 +370,7 @@
 
   <footer>
     <div class="container">
-      Have a great day! &mdash; Jonas
+      Jonas · ETH Zürich
     </div>
   </footer>
 
